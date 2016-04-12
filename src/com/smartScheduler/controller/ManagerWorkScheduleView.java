@@ -17,13 +17,13 @@ import javax.servlet.jsp.jstl.sql.Result;
  * Servlet implementation class Signout
  */
 @WebServlet("/Manager_Display")
-public class ManagerWorkScheduleDisplay extends HttpServlet {
+public class ManagerWorkScheduleView extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ManagerWorkScheduleDisplay() {
+    public ManagerWorkScheduleView() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -48,9 +48,10 @@ public class ManagerWorkScheduleDisplay extends HttpServlet {
 		Result result = null;
 		
 		String uid=(String) session.getAttribute("uid");
-		String action=request.getParameter("click");
+		String managerviewaction=request.getParameter("click");
+		session.setAttribute("managerviewaction", managerviewaction);
 		
-		if("schedule".equals(action))
+		if("schedule".equals(managerviewaction))
 		{
 			i=1;
 		try {
@@ -60,7 +61,7 @@ public class ManagerWorkScheduleDisplay extends HttpServlet {
 			e.printStackTrace();
 		}
 		}
-		if("not_schedule".equals(action))
+		if("not_schedule".equals(managerviewaction))
 		{
 			i=2;
 		try {
@@ -71,7 +72,7 @@ public class ManagerWorkScheduleDisplay extends HttpServlet {
 		}
 		}
 		request.setAttribute("result", result);
-		request.setAttribute("verify",action);
+		request.setAttribute("verify",managerviewaction);
         request.getRequestDispatcher("ManagerScheduleView.jsp").forward(request, response);
         loginc.closingConnection();
         	

@@ -24,8 +24,8 @@ private static final int Main_Slot_name = 0;
 private static Connection conn;
 public String uid;
 public static String name;
-public static String employee_edit;
-public static String Manager_edit;
+public String employee_edit;
+public String Manager_edit;
 
 
 	public static void makingConnection()
@@ -442,13 +442,13 @@ public static String Manager_edit;
 		return result;
 	}
 
-	public void EmployerWorkscheduleEdit(String edit,String uid2) throws SQLException {
+	public void EmployerWorkscheduleEdit(String edit,String uid2,String employee_edit1) throws SQLException {
 		// TODO Auto-generated method stub
-		System.out.println(employee_edit+uid2);
+		System.out.println(employee_edit1+uid2);
 		PreparedStatement ps = null;
 		PreparedStatement ps1 = null;
 		ResultSet rs=null;
-		if(employee_edit=="display")
+		if(employee_edit1=="display")
 		{
 		ps=conn.prepareStatement("UPDATE `smart_scheduler1`.`work_schedule` SET `Employee_ID`=NULL WHERE `Schedule_ID`='"+edit+"'");
 		ps.executeUpdate();
@@ -474,15 +474,15 @@ public static String Manager_edit;
 	 * @param delete :
 	 * @throws SQLException
 	 */
-	public void ManagerWorkscheduleEdit(String edit,String id, String delete,String uid2 ) throws SQLException {
+	public void ManagerWorkscheduleEdit(String edit,String id, String delete,String uid2,String Manager_edit1 ) throws SQLException {
 		// TODO Auto-generated method stub
-		System.out.println(employee_edit+uid2);
+		System.out.println(Manager_edit1+uid2);
 		PreparedStatement ps = null;
 		PreparedStatement ps1=null;
 		CallableStatement cs= null;
 		ResultSet rs=null;
 		System.out.println("passing the manager edit");
-		if(Manager_edit=="not_schedule")
+		if(Manager_edit1=="not_schedule")
 		{
 			if(delete!=null)
 			{

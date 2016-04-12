@@ -52,12 +52,13 @@ public class Employee_edit extends HttpServlet {
 	    String firstName = request.getParameter("a");
 	    System.out.println("From Servlet: " + firstName);
 		String edit = request.getParameter("edit");
+		String viewaction=(String) session.getAttribute("viewaction");
 		String asa = request.getParameter("resolution");
 		System.out.println("Schedule ID "+ edit);
 		System.out.println("display schedule");
 		
 		try {
-			loginc.EmployerWorkscheduleEdit(edit,uid);
+			loginc.EmployerWorkscheduleEdit(edit,uid,viewaction);
 			result=loginc.EmployerWorkscheduleView(2,uid);
 			System.out.println(result);
 		} catch (SQLException e) {

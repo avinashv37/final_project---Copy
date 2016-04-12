@@ -55,9 +55,10 @@ public class Manager_edit extends HttpServlet {
 		String delete= request.getParameter("delete");
 		String id = request.getParameter("eid");
 		System.out.println("Schedule ID "+ edit);
+		String managerviewaction=(String)session.getAttribute("managerviewaction");
 		
 		try {
-			loginc.ManagerWorkscheduleEdit(edit,id,delete,uid);
+			loginc.ManagerWorkscheduleEdit(edit,id,delete,uid,managerviewaction);
 			if(id!=null )
 			{
 			result=loginc.EmployerWorkscheduleView(2,uid);

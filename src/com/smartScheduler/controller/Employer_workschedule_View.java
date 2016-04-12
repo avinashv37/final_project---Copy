@@ -50,6 +50,7 @@ public class Employer_workschedule_View extends HttpServlet {
 		String uid=(String) session.getAttribute("uid");
 		String action="display_schedule";
 		action = request.getParameter("click");
+		session.setAttribute("viewaction", action);
 		System.out.println(action);
 		Database loginc=new Database();
 		loginc.makingConnection();
