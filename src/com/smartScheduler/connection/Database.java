@@ -346,7 +346,7 @@ public String Manager_edit;
 		if(value==1)
 		{
 			employee_edit="display";
-		ps=conn.prepareStatement("SELECT work_schedule.Employee_ID,Schedule_ID,employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,start_time,end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID where work_schedule.Employee_ID='"+uid2+"' AND date>=DATE_FORMAT(NOW(), '%m-%d-%Y') order by date;"  );
+		ps=conn.prepareStatement("SELECT work_schedule.Employee_ID,Schedule_ID,employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,Date_format(start_time,'%r') as start_time,Date_format(end_time,'%r')as end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID where work_schedule.Employee_ID='"+uid2+"' AND date>=DATE_FORMAT(NOW(), '%m-%d-%Y') order by date asc, start_time asc;"  );
 		rs=ps.executeQuery();
 		result=ResultSupport.toResult(rs);
 		ps.closeOnCompletion();
@@ -355,7 +355,7 @@ public String Manager_edit;
 		if(value==2)
 		{
 			employee_edit="open";
-		ps=conn.prepareStatement("SELECT Schedule_ID,time_slot.Slot_ID,employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,start_time,end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID where work_schedule.Employee_ID is NULL AND date>=DATE_FORMAT(NOW(), '%m-%d-%Y')order by date;");
+		ps=conn.prepareStatement("SELECT Schedule_ID,time_slot.Slot_ID,employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,Date_format(start_time,'%r') as start_time,Date_format(end_time,'%r')as end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID where work_schedule.Employee_ID is NULL AND date>=DATE_FORMAT(NOW(), '%m-%d-%Y')order by date asc, start_time asc;");
 		rs=ps.executeQuery();
 		result=ResultSupport.toResult(rs);
 		ps.closeOnCompletion();
@@ -376,7 +376,7 @@ public String Manager_edit;
 		System.out.println(value);
 		if(value==1)
 		{
-			ps=conn.prepareStatement("SELECT employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,start_time,end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID  where time_slot.Date='"+date+"'AND work_schedule.employee_id IS NULL order by date");
+			ps=conn.prepareStatement("SELECT employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,start_time,end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID  where time_slot.Date='"+date+"'AND work_schedule.employee_id IS NULL order by date asc, start_time asc");
 			rs=ps.executeQuery();
 			result=ResultSupport.toResult(rs);
 			System.out.println(result);
@@ -384,7 +384,7 @@ public String Manager_edit;
 		}
 		if(value==2)
 		{
-			ps=conn.prepareStatement("SELECT employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,start_time,end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID  where time_slot.Date='"+date+"'AND work_schedule.employee_id ='"+uid2+"' order by date");
+			ps=conn.prepareStatement("SELECT employee_info.FirstName,DATE_FORMAT(date, '%m-%d-%Y')AS date,start_time,end_time FROM work_schedule join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID join manager_info on manager_info.Manager_ID=time_slot.Manager_ID join employee_info on employee_info.Employee_ID= manager_info.Manager_ID  where time_slot.Date='"+date+"'AND work_schedule.employee_id ='"+uid2+"' order by date asc, start_time asc");
 			rs=ps.executeQuery();
 			result=ResultSupport.toResult(rs);
 			System.out.println(result);
@@ -448,7 +448,7 @@ public String Manager_edit;
 		PreparedStatement ps = null;
 		PreparedStatement ps1 = null;
 		ResultSet rs=null;
-		if(employee_edit1=="display")
+		if(employee_edit1.equals("display"))
 		{
 		ps=conn.prepareStatement("UPDATE `smart_scheduler1`.`work_schedule` SET `Employee_ID`=NULL WHERE `Schedule_ID`='"+edit+"'");
 		ps.executeUpdate();
@@ -481,9 +481,10 @@ public String Manager_edit;
 		PreparedStatement ps1=null;
 		CallableStatement cs= null;
 		ResultSet rs=null;
-		System.out.println("passing the manager edit");
-		if(Manager_edit1=="not_schedule")
+		//System.out.println("passing the manager edit");
+		if(Manager_edit1.equals("not_schedule"))
 		{
+			System.out.println("passing the manager edit");
 			if(delete!=null)
 			{
 				System.out.println("deleting time slot"+delete+id);
@@ -491,7 +492,7 @@ public String Manager_edit;
 				ps.executeUpdate();
 				ps.closeOnCompletion();
 			}
-			else
+			else 
 			{
 			System.out.println("updating the manager"+edit+id);
 		cs=conn.prepareCall("CALL InsertOpen('"+id+"','"+edit+"')");
@@ -501,7 +502,7 @@ public String Manager_edit;
 			}
 		
 		}
-		else
+		else if(Manager_edit1.equals("schedule"))
 		{
 			if(delete!=null)
 			{
@@ -529,7 +530,7 @@ public String Manager_edit;
 		// TODO Auto-generated method stub
 		
 		PreparedStatement ps = null;
-		ps=conn.prepareStatement("INSERT INTO schedule_switch (DATE, Requesting_Employee_ID, Schedule_ID,Switch_Employee_ID) values(NOW(),'"+uid2+"','"+edit+"','"+switchid+"')");
+		ps=conn.prepareStatement("INSERT INTO schedule_switch (DATE, Requesting_Employee_ID, Schedule_ID,Switch_Employee_ID) values(NOW(),'"+uid2+"','"+edit+"',(SELECT Employee_ID from employee_info where FirstName='"+switchid+"'));");
 		System.out.println(uid2);
 		ps.executeUpdate();
 		ps.closeOnCompletion();
@@ -547,13 +548,13 @@ public String Manager_edit;
 		Result result = null;
 		if(i==1)
 		{
-			ps=conn.prepareStatement("SELECT schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,start_time,end_time "
+			ps=conn.prepareStatement("SELECT schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,Date_format(start_time,'%r') as start_time,Date_format(end_time,'%r')as end_time "
 					+ "FROM work_schedule "
 					+ "join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID "
 					+ "join manager_info on manager_info.Manager_ID=time_slot.Manager_ID "
 					+ "join schedule_switch on work_schedule.Schedule_ID=schedule_switch.Schedule_ID "
 					+ "join employee_info on schedule_switch.Requesting_Employee_ID=employee_info.Employee_ID"
-					+ " where Switch_Employee_ID='"+uid2+"' AND time_slot.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status='Y' order by date");
+					+ " where Switch_Employee_ID='"+uid2+"' AND time_slot.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status='Y' order by date asc, start_time asc;");
 			rs=ps.executeQuery();
 			result=ResultSupport.toResult(rs);
 			ps.closeOnCompletion();
@@ -561,13 +562,13 @@ public String Manager_edit;
 		}
 		if(i==2)
 		{
-			ps=conn.prepareStatement("SELECT DISTINCT schedule_switch.Schedule_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,start_time,end_time "
+			ps=conn.prepareStatement("SELECT DISTINCT schedule_switch.Schedule_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,Date_format(start_time,'%r') as start_time,Date_format(end_time,'%r')as end_time "
 					+ "FROM work_schedule "
 					+ "join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID "
 					+ "join manager_info on manager_info.Manager_ID=time_slot.Manager_ID "
 					+ "join schedule_switch on work_schedule.Schedule_ID=schedule_switch.Schedule_ID "
 					+ "join employee_info on schedule_switch.Requesting_Employee_ID=employee_info.Employee_ID"
-					+ " where Switch_Employee_ID='"+uid2+"' AND time_slot.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status IS NULL order by date");
+					+ " where Switch_Employee_ID='"+uid2+"' AND time_slot.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status IS NULL order by date asc, start_time asc;");
 
 			rs=ps.executeQuery();
 			result=ResultSupport.toResult(rs);
@@ -602,13 +603,13 @@ public String Manager_edit;
 		Result result = null;
 		if(i==1)
 		{
-			ps=conn.prepareStatement("SELECT status,switch_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(schedule_switch.date, '%m-%d-%Y')AS switchdate,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,start_time,end_time "
+			ps=conn.prepareStatement("SELECT status,switch_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(schedule_switch.date, '%m-%d-%Y')AS switchdate,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,Date_format(start_time,'%r') as start_time,Date_format(end_time,'%r')as end_time "
 					+ "FROM work_schedule "
 					+ "join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID "
 					+ "join manager_info on manager_info.Manager_ID=time_slot.Manager_ID "
 					+ "join schedule_switch on work_schedule.Schedule_ID=schedule_switch.Schedule_ID "
 					+ "join employee_info on schedule_switch.switch_Employee_ID=employee_info.Employee_ID"
-					+ " where requesting_Employee_ID='"+uid2+"' AND schedule_switch.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status is null  order by schedule_switch.date");
+					+ " where requesting_Employee_ID='"+uid2+"' AND schedule_switch.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status is null  order by schedule_switch.date, start_time asc;");
 			rs=ps.executeQuery();
 			result=ResultSupport.toResult(rs);
 			ps.closeOnCompletion();
@@ -616,13 +617,13 @@ public String Manager_edit;
 		}
 		if(i==2)
 		{
-			ps=conn.prepareStatement("SELECT status,switch_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(schedule_switch.date, '%m-%d-%Y')AS switchdate,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,start_time,end_time "
+			ps=conn.prepareStatement("SELECT status,switch_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(schedule_switch.date, '%m-%d-%Y')AS switchdate,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,Date_format(start_time,'%r') as start_time,Date_format(end_time,'%r')as end_time "
 					+ "FROM work_schedule "
 					+ "join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID "
 					+ "join manager_info on manager_info.Manager_ID=time_slot.Manager_ID "
 					+ "join schedule_switch on work_schedule.Schedule_ID=schedule_switch.Schedule_ID "
 					+ "join employee_info on schedule_switch.switch_Employee_ID=employee_info.Employee_ID"
-					+ " where requesting_Employee_ID='"+uid2+"' AND schedule_switch.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status='Y'  order by schedule_switch.date");
+					+ " where requesting_Employee_ID='"+uid2+"' AND schedule_switch.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status='Y'  order by schedule_switch.date, start_time asc;");
 			rs=ps.executeQuery();
 			result=ResultSupport.toResult(rs);
 			ps.closeOnCompletion();
@@ -630,13 +631,13 @@ public String Manager_edit;
 		}
 		if(i==3)
 		{
-			ps=conn.prepareStatement("SELECT status,switch_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(schedule_switch.date, '%m-%d-%Y')AS switchdate,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,start_time,end_time "
+			ps=conn.prepareStatement("SELECT status,switch_ID,schedule_switch.Switch_Employee_ID,schedule_switch.Requesting_Employee_ID,employee_info.FirstName,DATE_FORMAT(schedule_switch.date, '%m-%d-%Y')AS switchdate,DATE_FORMAT(time_slot.date, '%m-%d-%Y')AS date,Date_format(start_time,'%r') as start_time,Date_format(end_time,'%r')as end_time "
 					+ "FROM work_schedule "
 					+ "join time_slot on work_schedule.Slot_ID = time_slot.Slot_ID "
 					+ "join manager_info on manager_info.Manager_ID=time_slot.Manager_ID "
 					+ "join schedule_switch on work_schedule.Schedule_ID=schedule_switch.Schedule_ID "
 					+ "join employee_info on schedule_switch.switch_Employee_ID=employee_info.Employee_ID"
-					+ " where requesting_Employee_ID='"+uid2+"' AND schedule_switch.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status='N' or status='D'  order by schedule_switch.date");
+					+ " where requesting_Employee_ID='"+uid2+"' AND schedule_switch.date>=DATE_FORMAT(NOW(), '%m-%d-%Y') AND status='N' or status='D'  order by schedule_switch.date, start_time asc;");
 			rs=ps.executeQuery();
 			result=ResultSupport.toResult(rs);
 			ps.closeOnCompletion();
@@ -725,6 +726,19 @@ public String Manager_edit;
 			System.out.println(uid2);
 			ps.executeUpdate();
 			ps.closeOnCompletion();
+		
+	}
+	
+	public String SuggestiveSearch(String name) throws SQLException
+	{
+		String buffer="";  
+		Statement st=conn.createStatement();
+		   ResultSet rs=st.executeQuery("select * from employee_info where FirstName like '"+name+"%'");
+		    while(rs.next())
+		    {
+		    buffer=buffer+"'"+rs.getString("FirstName")+"',";
+		    }
+		return null;
 		
 	}
 

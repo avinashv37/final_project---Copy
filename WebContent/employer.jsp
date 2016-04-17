@@ -36,6 +36,17 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 		   $(this).parent().addClass("active");
 		});
 		
+		
+		function showData(value){ 
+			$.ajax({
+			    url : "sugestive_search?name="+value,
+			    type : "POST",
+			    async : false,
+			    success : function(data) {
+			//Do something with the data here
+			    }
+			});
+			}
 	</script>
 	
 
@@ -55,7 +66,7 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 	    	</div>
 			<div class="collapse navbar-collapse" id="navigationbar">
 				<ul class="nav navbar-nav">
-					<li><a href="/final_project/employer.jsp"><% %></a></li>
+					<li><a href="/final_project/employer.jsp">Employer Home</a></li>
 					<li><a href="/final_project/SwitchingStatus.jsp">Switching Status</a></li>
 					<li><a href="/final_project/Employee_switch.jsp">Employee Switch</a></li>
 					<li><a href="/final_project/EmployerWorkSchedule.jsp">Schedule Add</a></li>
@@ -90,7 +101,7 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 		<div  style="height:50px;"></div>
 		{{response}}
 		<div class= "container table-responsive" id="Admin_home">
-		<table  class="table table-striped responsive">
+		<table  class="table table-striped responsive" >
             <!-- column headers -->
             
              <% Result result = (Result)request.getAttribute("result");
@@ -101,7 +112,7 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 					<th>Manager</th>
 					<th>Start time</th>
 					<th>End time<th>
-					<th><span id="change">Transfer Switch</span></th>
+					<th><span id="change">Select/Transfer</span></th>
 					
 				</tr>
 			</thead>
@@ -122,9 +133,9 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 	                        		<c:when test="${not empty row.Employee_ID}" >
 	                        		
 									<div class="form-group row col-xs-9">
-										 <form role="form" name="form1"  ng-controller="main" action ="Employee_switch" method="post" >
-										<p class="col-xs-1"><strong> id</strong><p><input class="input-sm col-xs-4 " type="text" id="switchid" name="switchid" ></input>  
-				                        <button    ng-controller="main" name="edit" class=" btn col-xs-2 " value="${row.Schedule_ID}" ng-click=edit>
+										 <form role="form" name="form2"  ng-controller="main" action ="Employee_switch" method="post" >
+										<p class="col-xs-4"><strong>Name</strong><p><input class="input-sm col-xs-5 " type="text" id="switchid" placeholder="First Name" name="switchid" ></input>  
+				                        <button  onclick="namecall()"  ng-controller="main" name="edit" class=" btn col-xs-2 " value="${row.Schedule_ID}" ng-click=edit onkeyup="showData(this.value);">
 												<span class="glyphicon glyphicon-transfer"></span>  
 										</button>
 										</form>
@@ -134,7 +145,7 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 									<c:when test="${empty row.Employee_ID}" >
 									<c:out value="${row.Schedule_ID}"/>
 									<div class="form-group row col-xs-6">
-				                        <form role="form" class="" name="form1"  ng-controller="main" action ="Employee_edit" method="post" >
+				                        <form role="form" class="" name="form3"  ng-controller="main" action ="Employee_edit" method="post" >
 				                        <button class="btn"   ng-controller="main" name="edit" value="${row.Schedule_ID}" ng-click=edit>
 												<span class="glyphicon glyphicon-ok"></span>  
 										</button>	
@@ -152,13 +163,23 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 	</body>
 	
 	<script>
-	
-	window.displays= function(){
+
+	<!--window.displays= function(){
 		   document.getElementById("change").innerHTML="display";
 		}
 		window.opens = function(){
 		   document.getElementById("change").innerHTML="open";
-		}
+		}-->
+		 function namecall(){
+			var a=document.form2.switchid.value;
+			if(a=="")
+				{
+			   alert("Enter First Name");
+			   document.form2.switchid.focus();
+				return false;
+				}
+			}
+		
 	</script>
 	<script type="text/javascript">
 	

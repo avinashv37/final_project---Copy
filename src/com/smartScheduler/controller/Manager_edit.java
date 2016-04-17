@@ -49,8 +49,8 @@ public class Manager_edit extends HttpServlet {
 		
 		String uid=(String) session.getAttribute("uid");
 		PrintWriter out = response.getWriter();
-	    String firstName = request.getParameter("a");
-	    System.out.println("From Servlet: " + firstName);
+	    String firstName =(String)session.getAttribute("fname");
+	    System.out.println("First name: " + firstName);
 		String edit = request.getParameter("edit");
 		String delete= request.getParameter("delete");
 		String id = request.getParameter("eid");
@@ -59,10 +59,15 @@ public class Manager_edit extends HttpServlet {
 		
 		try {
 			loginc.ManagerWorkscheduleEdit(edit,id,delete,uid,managerviewaction);
+			System.out.println(managerviewaction +" only this");
+			System.out.println("delete "+delete );
+			System.out.println("edit "+edit );
+			System.out.println("id "+id );
+
 			if(id!=null )
 			{
 			result=loginc.EmployerWorkscheduleView(2,uid);
-			System.out.println("delete ");
+			System.out.println("delete"+delete );
 			}
 			else
 			{
