@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -51,7 +52,7 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 	
 
 <body data-spy="scroll" data-target=".navbar-collapse" >
-	
+		
 		 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	     <div class="container-fluid" id="navfluid">
 	       <div class="navbar-header">
@@ -105,7 +106,9 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
             <!-- column headers -->
             
              <% Result result = (Result)request.getAttribute("result");
+             ArrayList<String> name= (ArrayList)request.getAttribute("name");
           %>
+          
             <thead>
 				<tr>
 					<th>Date</th>
@@ -132,12 +135,20 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
                         		<c:choose>
 	                        		<c:when test="${not empty row.Employee_ID}" >
 	                        		
-									<div class="form-group row col-xs-9">
-										 <form role="form" name="form2"  ng-controller="main" action ="Employee_switch" method="post" >
-										<p class="col-xs-4"><strong>Name</strong><p><input class="input-sm col-xs-5 " type="text" id="switchid" placeholder="First Name" name="switchid" ></input>  
-				                        <button  onclick="namecall()"  ng-controller="main" name="edit" class=" btn col-xs-2 " value="${row.Schedule_ID}" ng-click=edit onkeyup="showData(this.value);">
+									<div class="form-group row col-xs-12">
+										 <form class="form-inline" role="form" name="form2"  ng-controller="main" action ="Employee_switch" method="post" >
+										<p class="col-xs-4"><strong>Name</strong><p>
+										<select  class="form-control col-xs-6 " type="text" id="switchid" placeholder="First Name" name="switchid">
+			                                <c:forEach var="nam" items="${name}">
+			                                    <option value="${nam}">${nam}</option>
+			                                </c:forEach>
+			
+			                            </select> 
+			                             <div class="btn-group">
+				                        <button class="btn " onclick="namecall()"  ng-controller="main" name="edit"  value="${row.Schedule_ID}" ng-click=edit ">
 												<span class="glyphicon glyphicon-transfer"></span>  
 										</button>
+										</div>
 										</form>
 									</div>
 									</c:when>
@@ -169,7 +180,7 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 		}
 		window.opens = function(){
 		   document.getElementById("change").innerHTML="open";
-		}-->
+		}  -->
 		 function namecall(){
 			var a=document.form2.switchid.value;
 			if(a=="")

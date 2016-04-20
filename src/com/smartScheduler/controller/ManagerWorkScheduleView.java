@@ -4,6 +4,7 @@ import com.smartScheduler.connection.Database;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,7 +47,8 @@ public class ManagerWorkScheduleView extends HttpServlet {
 		loginc.makingConnection();
 		int i=1;
 		Result result = null;
-		
+		ArrayList<String> nameList=null;
+
 		String uid=(String) session.getAttribute("uid");
 		String managerviewaction=request.getParameter("click");
 		session.setAttribute("managerviewaction", managerviewaction);
@@ -65,6 +67,8 @@ public class ManagerWorkScheduleView extends HttpServlet {
 		{
 			i=2;
 		try {
+			result=loginc.EmployerWorkscheduleView(1,uid);
+			nameList=loginc.getname();
 			result = loginc.ManagerWorkscheduleView(i,uid);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -72,6 +76,7 @@ public class ManagerWorkScheduleView extends HttpServlet {
 		}
 		}
 		request.setAttribute("result", result);
+		request.setAttribute("name", nameList);
 		request.setAttribute("verify",managerviewaction);
         request.getRequestDispatcher("ManagerScheduleView.jsp").forward(request, response);
         loginc.closingConnection();

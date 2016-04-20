@@ -4,6 +4,7 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -495,7 +496,7 @@ public String Manager_edit;
 			else 
 			{
 			System.out.println("updating the manager"+edit+id);
-		cs=conn.prepareCall("CALL InsertOpen('"+id+"','"+edit+"')");
+		cs=conn.prepareCall("CALL InsertSelect('"+id+"','"+edit+"')");
 		rs=cs.executeQuery();
 		System.out.println("calling statement");
 		rs.close();
@@ -742,5 +743,19 @@ public String Manager_edit;
 		
 	}
 
-	
+	public ArrayList<String> getname() throws SQLException
+	{
+		 ArrayList<String> nameList = new ArrayList<String>();
+	        String tryquery = "Select FirstName from employee_info ;";
+	        Statement stmt2 = conn.createStatement();
+	        ResultSet rs1 = stmt2.executeQuery(tryquery);
+
+	        while (rs1.next()) {
+
+	            nameList.add(rs1.getString("FirstName"));
+
+	        }
+	       return nameList;
+		
+	}
 }

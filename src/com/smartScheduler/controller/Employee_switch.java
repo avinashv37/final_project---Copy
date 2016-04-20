@@ -2,6 +2,7 @@ package com.smartScheduler.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,6 +45,7 @@ public class Employee_switch extends HttpServlet {
 		Database loginc=new Database();
 		loginc.makingConnection();
 		Result result=null;
+		ArrayList<String> nameList=null;
 		HttpSession session = request.getSession();
 		
 		String uid=(String) session.getAttribute("uid");
@@ -55,11 +57,13 @@ public class Employee_switch extends HttpServlet {
 		try {
 			loginc.Employer_switch(edit,switchid,uid);
 			result=loginc.EmployerWorkscheduleView(1,uid);
+			nameList=loginc.getname();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		request.setAttribute("result", result);
+		request.setAttribute("name", nameList);
 		request.getRequestDispatcher("employer.jsp").forward(request, response);
         loginc.closingConnection();
 	}

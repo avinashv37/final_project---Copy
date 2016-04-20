@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 ///import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,6 +42,7 @@ public class Signin extends HttpServlet {
 		// TODO Auto-generated method stub
 		String username=null,uname=null;
 		String password=null,pword=null;
+		ArrayList<String> nameList=null;
 		int i = 0;
 		username=request.getParameter("name");
 		password=request.getParameter("password");
@@ -74,11 +75,13 @@ public class Signin extends HttpServlet {
                         request.setAttribute("var", " ");
             			try {
 							result=loginc.EmployerWorkscheduleView(1,loginc.uid);
+							nameList=loginc.getname();
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
             			request.setAttribute("result", result);
+            			request.setAttribute("name", nameList);
             	        request.getRequestDispatcher("employer.jsp").forward(request, response);
             	  
             			

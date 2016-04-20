@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -90,11 +91,16 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 		<table  class="table table-striped responsive">
             <!-- column headers -->
             
-             <% String action = (String)request.getAttribute("verify");
+             <%
+             
+             ArrayList<String> name= (ArrayList)request.getAttribute("name");
+             String action = (String)request.getAttribute("verify");
              String schedule="schedule";
              String not_schedule="not_schedule";
              System.out.println(action);
+             
 				          %>
+				          ${name.get(0)}
           		<thead>
             
 								<tr>
@@ -130,16 +136,25 @@ import = "javax.servlet.jsp.jstl.sql.ResultSupport" %>
 										</form>
 									</c:when>
 									<c:when test="${not empty row.slot_id}">
-							            <form action ="Manager_edit" method="POST">
-					                         <strong>id</strong> <input class="input-sm"type="text" id="eid" name="eid" ></input>
-					                        <button class="btn"  id="id" ng-controller="main" name="edit"  value="${row.Schedule_ID}" ng-click=edit>
+									<div class="form-group row col-xs-12">
+							            <form class="form-inline" role="form" action ="Manager_edit" method="POST">
+					                         <p class="col-xs-3"><strong>Name</strong> </p>
+					                         <select class="form-control " type="text" id="eid" name="eid">
+				                                <c:forEach var="nam" items="${name}">
+				                                    <option value="${nam}">${nam}</option>
+				                                </c:forEach>
+			                           		 </select> 
+			                           		 <div class="btn-group">
+					                        <button class="btn "  id="id" ng-controller="main" name="edit"  value="${row.Schedule_ID}" ng-click=edit>
 													<span class="glyphicon glyphicon-ok"></span>  
 											</button>
-											<button class="btn"  id="id" ng-controller="main" name="delete"  value="${row.Schedule_ID}" ng-click=edit>
+											<button class="btn "  id="id" ng-controller="main" name="delete"  value="${row.Schedule_ID}" ng-click=edit>
 													<span class="glyphicon glyphicon-trash"></span>  
 											</button>
+											</div>
 											
 										</form>
+										</div>
 									</c:when>
 					         	</c:choose>
 					                        </td>

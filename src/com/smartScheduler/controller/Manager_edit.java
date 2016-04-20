@@ -3,6 +3,7 @@ package com.smartScheduler.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.sql.Result;
+
+import org.w3c.dom.NameList;
 
 import com.smartScheduler.connection.Database;
 
@@ -45,6 +48,7 @@ public class Manager_edit extends HttpServlet {
 		Database loginc=new Database();
 		loginc.makingConnection();
 		Result result=null;
+		ArrayList<String> nameList=null;
 		HttpSession session = request.getSession();
 		
 		String uid=(String) session.getAttribute("uid");
@@ -58,6 +62,7 @@ public class Manager_edit extends HttpServlet {
 		String managerviewaction=(String)session.getAttribute("managerviewaction");
 		
 		try {
+			nameList=loginc.getname();
 			loginc.ManagerWorkscheduleEdit(edit,id,delete,uid,managerviewaction);
 			System.out.println(managerviewaction +" only this");
 			System.out.println("delete "+delete );
@@ -80,6 +85,7 @@ public class Manager_edit extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("result", result);
+		request.setAttribute("name", nameList);
 		request.getRequestDispatcher("ManagerScheduleView.jsp").forward(request, response);
         loginc.closingConnection();
 	}
